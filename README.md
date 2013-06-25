@@ -1,4 +1,4 @@
-django-db-multitenant
-=====================
+# django-db-multitenant
 
-A simple multi-tenancy solution for Django apps.
+Provides a simple multi-tenancy solution for Django based on the concept
+of having a single tenant per database.
