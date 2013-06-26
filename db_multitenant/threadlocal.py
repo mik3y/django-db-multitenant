@@ -36,7 +36,6 @@ class MultiTenantThreadlocal(local):
     database connection."""
     def __init__(self):
         self.dbname = None
-        self.applied_dbname = None
         self.cache_prefix = None
 
     def get_dbname(self):
@@ -48,12 +47,6 @@ class MultiTenantThreadlocal(local):
             raise ValueError('Illegal database name: %s' % dbname)
         self.dbname = dbname
 
-    def get_applied_dbname(self):
-        return self.applied_dbname
-
-    def set_applied_dbname(self, dbname):
-        self.applied_dbname = dbname
-
     def set_cache_prefix(self, prefix):
         self.cache_prefix = prefix
 
@@ -61,7 +54,6 @@ class MultiTenantThreadlocal(local):
         return self.cache_prefix
 
     def reset(self):
-        # Leave applied_dbname alone.
         self.dbname = None
         self.cache_prefix = None
 
