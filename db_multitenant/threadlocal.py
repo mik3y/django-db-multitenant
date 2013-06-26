@@ -33,10 +33,22 @@ LOGGER = logging.getLogger('db_multitenant')
 
 class MultiTenantThreadlocal(local):
     """Thread-local state.  An instance of this should be attached to a
-    database connection."""
+    database connection.
+
+    The first time a request is processed, the tenant name is looked up and
+    set in this class.  When a cursor is accquired on that connection,
+    the database wrapper will apply the tenant name.
+    """
     def __init__(self):
+        self.tenant_name = None
         self.dbname = None
         self.cache_prefix = None
+
+    def get_tenant_name(self):
+        return self.tenant_name
+
+    def set_tenant_name(self, tenant_name):
+        self.tenant_name = tenant_name
 
     def get_dbname(self):
         return self.dbname

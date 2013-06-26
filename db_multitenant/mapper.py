@@ -29,6 +29,10 @@ class TenantMapper:
     You must provide an implementation of this class, and set
     settings.MULTITENANT_MAPPER_CLASS to its full class name.
     """
+    def get_tenant_name(self, request):
+        """Returns an opaque identifier for the current tenant."""
+        raise NotImplementedError
+
     def get_dbname(self, request):
         """Returns the database name which should be used for this tenant."""
         raise NotImplementedError
