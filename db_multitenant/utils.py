@@ -29,6 +29,22 @@ from db_multitenant.mapper import TenantMapper
 
 _CACHED_MAPPER = None
 
+import os
+
+def update_database_from_env(db_dict):
+    from django.db import connection
+    dbname = os.environ.get('TENANT_DATABASE_NAME')
+    if dbname:
+        db_dict['NAME'] = dbname
+        connection.get_threadlocal().set_dbname(dbname)
+
+def update_cache_from_env(cache_dict):
+    from django.db import connection
+    cache_prefix = os.environ.get('TENANT_CACHE_PREFIX')
+    if cache_prefix is not None:
+        cache_dict['KEY_PREFIX'] = cache_prefix
+        connection.get_threadlocal().set_cache_prefix(cache_prefix)
+
 def get_mapper():
     """Returns the mapper."""
     global _CACHED_MAPPER
@@ -50,3 +66,4 @@ def get_mapper():
         _CACHED_MAPPER = cls()
 
     return _CACHED_MAPPER
+
