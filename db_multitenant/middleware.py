@@ -39,6 +39,11 @@ class MultiTenantMiddleware(object):
         threadlocal.set_dbname(mapper.get_dbname(request))
         threadlocal.set_cache_prefix(mapper.get_cache_prefix(request))
 
+        if 'django.contrib.sites' in settings.INSTALLED_APPS:
+            # Clear the sites framework cache.
+            from django.contrib.sites.models import Site
+            Site.objects.clear_cache()
+
     def process_response(self, request, response):
         """Clears the database name and cache prefix on response.
 
