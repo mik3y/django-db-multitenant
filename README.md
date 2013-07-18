@@ -26,6 +26,9 @@ This application implements a variation of the **isolated approach**:
 * Each tenant has its **own database**, however
 * Other **connection details are shared** (such as password, database user).
 
+django-db-multitenant makes it possible (even easy) to take a Django application
+designed for a single tenant and use it with multiple tenants.
+
 ## Operation
 
 The main technique is as follows:
@@ -108,6 +111,22 @@ CACHES = {
     'KEY_FUNCTION': 'db_multitenant.cache.helper.multitenant_key_func'
     }
 }
+```
+
+**Management Commands**: In order to use management commands (like syncdb)
+with the correct tenant, inject this little hack in your settings:
+
+```python
+from db_multitenant import utils
+utils.update_database_from_env(DATABASES['default'])
+utils.update_cache_from_env(CACHES['default'])
+```
+
+You can then export ``$TENANT_DATABASE_NAME`` and ``TENANT_CACHE_PREFIX``
+on the command line:
+
+```
+$ TENANT_DATABASE_NAME=example.com ./manage.py syncdb
 ```
 
 That's it.  Because django-db-multitenant does not define any models, there's
