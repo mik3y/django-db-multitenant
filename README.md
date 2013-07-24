@@ -3,8 +3,10 @@
 Provides a simple multi-tenancy solution for Django based on the concept
 of having a **single tenant per database**.
 
-**Note:** This application is experimental, but being built for use in
+This application is still experimental, but is being used in
 production by the author. Contributions and discussion are welcome.
+
+**Latest Version:** v0.1.1, July 24, 2013 ([changelog](CHANGELOG.md))
 
 ## Background
 
