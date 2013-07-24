@@ -22,12 +22,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import logging
-
 from threading import local
-from django.conf import settings
-from django.utils.importlib import import_module
-from django.core.exceptions import ImproperlyConfigured
-from django.db import utils
 
 LOGGER = logging.getLogger('db_multitenant')
 

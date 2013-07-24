@@ -23,7 +23,6 @@
 
 from django.conf import settings
 from django.db import connection
-from django.core.exceptions import ImproperlyConfigured
 
 from db_multitenant import utils
 
