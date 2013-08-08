@@ -40,14 +40,14 @@ The main technique is as follows:
 2. Later in the request, when a database cursor is accquired, issue an SQL
    ``USE <tenant database name>`` for the desired tenant.
 
-Step 1 is accomplished by implementing a [mapper class](blob/master/db_multitenant/mapper.py).
+Step 1 is accomplished by implementing a [mapper class](https://github.com/mik3y/django-db-multitenant/blob/master/db_multitenant/mapper.py).
 Your mapper takes a request object and returns a database name, using whatever logic you
 like (translate hostname, inspect a HTTP header, etc).  The mapper result is saved in
 thread-local storage for later use.
 
 Step 2 determines whether the desired database has already been selected, and is skipped if
 so.  This is implemented using a
-[thin database backend wrapper](blob/master/db_multitenant/db/backends/mysql/base.py),
+[thin database backend wrapper](https://github.com/mik3y/django-db-multitenant/blob/master/db_multitenant/db/backends/mysql/base.py),
 which must be set in ``settings.DATABASES`` as the backend.
 
 ## Usage
@@ -62,7 +62,7 @@ $ pip install django-db-multitenant
 
 ### 2. Implement a mapper
 
-You must implement a sublcass of [db_multitenant.mapper](blob/master/db_multitenant/mapper.py)
+You must implement a sublcass of [db_multitenant.mapper](https://github.com/mik3y/django-db-multitenant/blob/master/db_multitenant/mapper.py)
 which determines the database name and cache prefix from the request.
 
 Some examples:
