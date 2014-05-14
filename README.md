@@ -129,9 +129,9 @@ SOUTH_DATABASE_ADAPTERS = {
 with the correct tenant, inject this little hack in your settings:
 
 ```python
-from db_multitenant import utils
-utils.update_database_from_env(DATABASES['default'])
-utils.update_cache_from_env(CACHES['default'])
+from db_multitenant.utils import update_from_env
+update_from_env(database_settings=DATABASES['default'],
+    cache_settings=CACHES['default'])
 ```
 
 You can then export ``$TENANT_DATABASE_NAME`` and ``TENANT_CACHE_PREFIX``

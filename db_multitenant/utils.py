@@ -35,12 +35,23 @@ _CACHED_MAPPER = None
 
 import os
 
+def update_from_env(database_settings, cache_settings):
+    update_database_from_env(database_settings)
+    update_cache_from_env(cache_settings)
+    update_tenant_name_from_env()
+
 def update_database_from_env(db_dict):
     from django.db import connection
     dbname = os.environ.get('TENANT_DATABASE_NAME')
     if dbname:
         db_dict['NAME'] = dbname
         connection.get_threadlocal().set_dbname(dbname)
+
+def update_tenant_name_from_env():
+    from django.db import connection
+    tenant_name = os.environ.get('TENANT_NAME')
+    if tenant_name:
+        connection.get_threadlocal().set_tenant_name(tenant_name)
 
 def update_cache_from_env(cache_dict):
     from django.db import connection
