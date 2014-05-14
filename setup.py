@@ -7,7 +7,7 @@ README = 'README.md'
 
 setup(
     name='django-db-multitenant',
-    version='0.1.1',
+    version='0.1.2',
     author='mike wakerly',
     author_email='opensource@hoho.com',
     packages = find_packages(),
