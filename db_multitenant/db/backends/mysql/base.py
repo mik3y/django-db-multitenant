@@ -23,11 +23,15 @@
 
 import logging
 import time
+import sys
 
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.importlib import import_module
 from db_multitenant.threadlocal import MultiTenantThreadlocal
-
+if sys.version_info < (2, 7) :
+    from django.utils.importlib import import_module
+else:
+    from importlib import import_module
+    
 WRAPPED_BACKEND = import_module('django.db.backends.mysql.base')
 
 LOGGER = logging.getLogger('db_multitenant')
