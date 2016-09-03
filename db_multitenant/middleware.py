@@ -23,10 +23,11 @@
 
 from django.conf import settings
 from django.db import connection
+from django.utils.deprecation import MiddlewareMixin
 
 from db_multitenant import utils
 
-class MultiTenantMiddleware(object):
+class MultiTenantMiddleware(MiddlewareMixin):
     """Should be placed first in your middlewares.
 
     This middleware sets up the database and cache prefix from the request."""

@@ -25,8 +25,9 @@ import logging
 import time
 
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.importlib import import_module
+from importlib import import_module
 from db_multitenant.threadlocal import MultiTenantThreadlocal
+from db_multitenant.utils import update_database_from_env
 
 WRAPPED_BACKEND = import_module('django.db.backends.mysql.base')
 
@@ -50,7 +51,12 @@ class DatabaseWrapper(WRAPPED_BACKEND.DatabaseWrapper):
 
         dbname = self.threadlocal.get_dbname()
         if not dbname:
-            raise ImproperlyConfigured('dbname not set at cursor create time')
+            # Django loads the settings after it tries to connect to mysql, when running management commands
+            # If that's the case, update database name manually
+            update_database_from_env(super(DatabaseWrapper, self).get_connection_params())
+            dbname = self.threadlocal.get_dbname()
+            if not dbname:
+                raise ImproperlyConfigured('dbname not set at cursor create time')
 
         # Cache the applied dbname as "mt_dbname" on the connection, avoiding
         # an extra execute() if already set.  Importantly, we assume no other
