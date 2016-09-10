@@ -23,10 +23,16 @@
 
 from django.conf import settings
 from django.db import connection
+try:
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:
+    # Not required for Django <= 1.9, see:
+    # https://docs.djangoproject.com/en/1.10/topics/http/middleware/#upgrading-pre-django-1-10-style-middleware
+    MiddlewareMixin = object
 
 from db_multitenant import utils
 
-class MultiTenantMiddleware(object):
+class MultiTenantMiddleware(MiddlewareMixin):
     """Should be placed first in your middlewares.
 
     This middleware sets up the database and cache prefix from the request."""
