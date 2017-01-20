@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.1.3 (2019-09-10)
+## v0.1.3 (2016-09-10)
 
 * Django 1.10 compatibility ([#8](https://github.com/mik3y/django-db-multitenant/pull/8))
 
