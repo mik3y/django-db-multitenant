@@ -36,9 +36,7 @@ class MultiTenantThreadlocal(local):
     the database wrapper will apply the tenant name.
     """
     def __init__(self):
-        self.tenant_name = None
-        self.dbname = None
-        self.cache_prefix = None
+        self.reset()
 
     def get_tenant_name(self):
         return self.tenant_name
@@ -62,6 +60,7 @@ class MultiTenantThreadlocal(local):
         return self.cache_prefix
 
     def reset(self):
+        self.tenant_name = None
         self.dbname = None
         self.cache_prefix = None
 
