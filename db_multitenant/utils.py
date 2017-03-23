@@ -21,14 +21,10 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
-import sys
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-if sys.version_info < (2, 7):
-    from django.utils.importlib import import_module
-else:
-    from importlib import import_module
+from importlib import import_module
 
 from db_multitenant.mapper import TenantMapper
 

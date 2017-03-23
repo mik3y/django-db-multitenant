@@ -23,17 +23,13 @@
 
 import logging
 import time
-import sys
 
 from django.core.exceptions import ImproperlyConfigured
-if sys.version_info < (2, 7) :
-    from django.utils.importlib import import_module
-else:
-    from importlib import import_module
-    
+from importlib import import_module
+
 from db_multitenant.threadlocal import MultiTenantThreadlocal
 from db_multitenant.utils import update_database_from_env
-    
+
 WRAPPED_BACKEND = import_module('django.db.backends.mysql.base')
 
 LOGGER = logging.getLogger('db_multitenant')
@@ -77,7 +73,3 @@ class DatabaseWrapper(WRAPPED_BACKEND.DatabaseWrapper):
             connection.mt_dbname = dbname
 
         return cursor
-
-
-DatabaseError = WRAPPED_BACKEND.DatabaseError
-IntegrityError = WRAPPED_BACKEND.IntegrityError
