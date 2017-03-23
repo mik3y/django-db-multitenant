@@ -26,6 +26,7 @@ from threading import local
 
 LOGGER = logging.getLogger('db_multitenant')
 
+
 class MultiTenantThreadlocal(local):
     """Thread-local state.  An instance of this should be attached to a
     database connection.
@@ -50,7 +51,7 @@ class MultiTenantThreadlocal(local):
 
     def set_dbname(self, dbname):
         # Sanity check; this is highly simplistic; mappers should sanitize.
-        if ';' in dbname:
+        if dbname and ';' in dbname:
             raise ValueError('Illegal database name: %s' % dbname)
         self.dbname = dbname
 
