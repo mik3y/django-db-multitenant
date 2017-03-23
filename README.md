@@ -38,16 +38,19 @@ The main technique is as follows:
 1. When a request first arrives, determine desired the tenant from the ``request`` object,
    and save it in thread-local storage.
 2. Later in the request, when a database cursor is accquired, issue an SQL
-   ``USE <tenant database name>`` for the desired tenant.
+   ``USE <tenant database name>`` for the desired tenant with MySQL or
+   ``SET search_patch TO <tenant name>``` with PostgreSQL.
 
-Step 1 is accomplished by implementing a [mapper class](https://github.com/mik3y/django-db-multitenant/blob/master/db_multitenant/mapper.py).
-Your mapper takes a request object and returns a database name, using whatever logic you
-like (translate hostname, inspect a HTTP header, etc).  The mapper result is saved in
-thread-local storage for later use.
+Step 1 is accomplished by implementing a [mapper
+class](https://github.com/mik3y/django-db-multitenant/blob/master/db_multitenant/mapper.py).
+Your mapper takes a request object and returns a database name or tenant name,
+using whatever logic you like (translate hostname, inspect a HTTP header, etc).
+The mapper result is saved in thread-local storage for later use.
 
-Step 2 determines whether the desired database has already been selected, and is skipped if
-so.  This is implemented using a
-[thin database backend wrapper](https://github.com/mik3y/django-db-multitenant/blob/master/db_multitenant/db/backends/mysql/base.py),
+Step 2 determines whether the desired database or schema has already been
+selected, and is skipped if so. This is implemented using a [thin database
+backend
+wrapper](https://github.com/mik3y/django-db-multitenant/blob/master/db_multitenant/db/backends/mysql/base.py),
 which must be set in ``settings.DATABASES`` as the backend.
 
 ## Usage
@@ -67,8 +70,9 @@ which determines the database name and cache prefix from the request.
 
 Some examples:
 
-* A [simple mapper](https://gist.github.com/mik3y/5959322), which uses a portion of the hostname
+* A [simple mapper for MySQL](https://gist.github.com/mik3y/5959322), which uses a portion of the hostname
   directly as the database name.
+* A [simple mapper for PostgreSQL](https://gist.github.com/stephane/08b649ea818bd9dce2ff33903ba94aba)
 * A [Redis-backed mapper](https://gist.github.com/mik3y/5959282), which looks up the tenant
   using the hostname, throwing a 404 if unrecognized.
 
@@ -98,7 +102,7 @@ DATABASES = {
     }
 ```
 
-*Note*: Due to a current limitation, the named database must exist.  It may
+*Note*: the `NAME` is useless for MySQL but due to a current limitation, the named database must exist.  It may
 be empty and read-only.
 
 Optionally, add the multitenant helper ``KEY_FUNCTION`` to your cache definition,
@@ -134,8 +138,8 @@ update_from_env(database_settings=DATABASES['default'],
     cache_settings=CACHES['default'])
 ```
 
-You can then export ``$TENANT_DATABASE_NAME`` and ``TENANT_CACHE_PREFIX``
-on the command line:
+You can then export ``TENANT_DATABASE_NAME``, ``TENANT_NAME`` and
+``TENANT_CACHE_PREFIX`` on the command line:
 
 ```
 $ TENANT_DATABASE_NAME=example.com ./manage.py syncdb
@@ -147,7 +151,7 @@ no need to add it to ``INSTALLED_APPS``.
 ## Advantages and Limitations
 
 There is no one-size-fits-all solution for a data modeling problem such
-as multi-tenancy (see 'Alternatives'). 
+as multi-tenancy (see 'Alternatives').
 
 #### Advantages
 
