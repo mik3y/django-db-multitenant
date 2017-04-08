@@ -37,6 +37,6 @@ class TenantMapper:
         """Returns the database name which should be used for this tenant."""
         raise NotImplementedError
 
-    def get_cache_prefix(self, request):
+    def get_cache_prefix(self, request, tenant_name, db_name):
         """Returns the cache prefixed to be used for this tenant."""
         raise NotImplementedError

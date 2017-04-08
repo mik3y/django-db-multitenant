@@ -41,9 +41,11 @@ class MultiTenantMiddleware(MiddlewareMixin):
         mapper = utils.get_mapper()
 
         threadlocal = connection.get_threadlocal()
-        threadlocal.set_tenant_name(mapper.get_tenant_name(request))
-        threadlocal.set_dbname(mapper.get_dbname(request))
-        threadlocal.set_cache_prefix(mapper.get_cache_prefix(request))
+        tenant_name = mapper.get_tenant_name(request)
+        threadlocal.set_tenant_name(tenant_name)
+        db_name = mapper.get_dbname(request)
+        threadlocal.set_dbname(db_name)
+        threadlocal.set_cache_prefix(mapper.get_cache_prefix(request, db_name, tenant_name))
 
         if 'django.contrib.sites' in settings.INSTALLED_APPS:
             # Clear the sites framework cache.
