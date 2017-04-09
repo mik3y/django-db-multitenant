@@ -32,6 +32,7 @@ except ImportError:
 
 from db_multitenant import utils
 
+
 class MultiTenantMiddleware(MiddlewareMixin):
     """Should be placed first in your middlewares.
 
@@ -53,7 +54,7 @@ class MultiTenantMiddleware(MiddlewareMixin):
         """Clears the database name and cache prefix on response.
 
         This is a precaution against the connection being reused without
-        first calling set_dbname.
+        first calling set_dbname or set_tenant_name.
         """
         connection.get_threadlocal().reset()
         return response
