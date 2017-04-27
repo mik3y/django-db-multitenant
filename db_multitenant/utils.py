@@ -30,6 +30,7 @@ from db_multitenant.mapper import TenantMapper
 
 _CACHED_MAPPER = None
 
+
 def update_from_env(database_settings, cache_settings):
     update_database_from_env(database_settings)
     update_cache_from_env(cache_settings)
