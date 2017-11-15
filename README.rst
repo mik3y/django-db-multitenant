@@ -99,13 +99,14 @@ implementation:
 
     MULTITENANT_MAPPER_CLASS = 'myapp.mapper.TenantMapper'
 
-Install the multitenant middleware as the *first* middleware.
+Install the multitenant middleware as the *first* middleware (prior to Django
+1.10, you must use the ``MIDDLEWARE_CLASSES`` setting):
 
 .. code:: python
 
-    MIDDLEWARE_CLASSES = (
+    MIDDLEWARE = (
         'db_multitenant.middleware.MultiTenantMiddleware',
-        ) + MIDDLEWARE_CLASSES
+        ) + MIDDLEWARE
 
 Change your database backend to the multitenant wrapper:
 
