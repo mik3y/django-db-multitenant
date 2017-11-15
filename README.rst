@@ -7,7 +7,7 @@ of having a **single tenant per database**.
 This application is still experimental, but is being used in production
 by the author. Contributions and discussion are welcome.
 
-`Read the Changelog <CHANGELOG.md>`__
+`Read the Changelog <CHANGELOG.rst>`__
 
 Background
 ----------
