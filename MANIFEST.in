@@ -1,2 +1,2 @@
-include *.md *.txt
+include *.rst *.txt
 recursive-include db_multitenant *.py
