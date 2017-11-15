@@ -5,7 +5,7 @@ Provides a simple multi-tenancy solution for Django based on the concept
 of having a **single tenant per database**.
 
 This application is still experimental, but is being used in production
-by the author. Contributions and discussion are welcome.
+by the authors. Contributions and discussion are welcome.
 
 `Read the Changelog <CHANGELOG.rst>`__
 
@@ -21,15 +21,19 @@ Among the possible approaches are:
 
 -  **Isolated approach**: Separate database per tenant.
 -  **Semi-isolated approach**: Shared database, separate namespaces
-   (postgres schemas) or table names/prefix per tenant.
+   (PostgreSQL schemas) or table names/prefix per tenant.
 -  **Shared approach**: Single database for all tenants. Each table has
    a column identifying the tenant for that row of data.
 
-This application implements a variation of the **isolated approach**:
+This application supports two backends, MySQL and PostgreSQL:
 
--  Each tenant has its **own database**, however
--  Other **connection details are shared** (such as password, database
-   user).
+- **With MySQL**, this application implements a variation of the **isolated approach**,
+  each tenant has its **own database**, however their **connection details are
+  shared** (such as password, database user).
+
+- **For PostgreSQL**, this application implements a **semi-isolated approach**,
+  each tenant has its own schema and the connection details are shared via the
+  public schema.
 
 django-db-multitenant makes it possible (even easy) to take a Django
 application designed for a single tenant and use it with multiple
@@ -54,9 +58,10 @@ header, etc). The mapper result is saved in thread-local storage for
 later use.
 
 Step 2 determines whether the desired database or schema has already
-been selected, and is skipped if so. This is implemented using a `thin
+been selected, and is skipped if so. This is implemented using a thin
 database backend
-wrapper <https://github.com/mik3y/django-db-multitenant/blob/master/db_multitenant/db/backends/mysql/base.py>`__,
+wrapper `for MySQL <https://github.com/mik3y/django-db-multitenant/blob/master/db_multitenant/db/backends/mysql/base.py>`__ and
+`for PostgreSQL <https://github.com/mik3y/django-db-multitenant/blob/master/db_multitenant/db/backends/postgresql/base.py>`__
 which must be set in ``settings.DATABASES`` as the backend.
 
 Usage
@@ -117,10 +122,22 @@ Change your database backend to the multitenant wrapper:
             'ENGINE': 'db_multitenant.db.backends.mysql',
             'NAME': 'devnull',
         }
+    }
 
 *Note*: the ``NAME`` is useless for MySQL but due to a current
 limitation, the named database must exist. It may be empty and
 read-only.
+
+Or for PostgreSQL:
+
+.. code:: python
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'db_multitenant.db.backends.postgresql',
+            'NAME': 'mydb',
+        }
+    }
 
 Optionally, add the multitenant helper ``KEY_FUNCTION`` to your cache
 definition, which will cause cache keys to be prefixed with the value of
@@ -156,8 +173,8 @@ settings:
     update_from_env(database_settings=DATABASES['default'],
         cache_settings=CACHES['default'])
 
-You can then export ``TENANT_DATABASE_NAME``, ``TENANT_NAME`` and
-``TENANT_CACHE_PREFIX`` on the command line:
+You can then export ``TENANT_DATABASE_NAME``, ``TENANT_NAME`` (for PostgreSQL)
+and ``TENANT_CACHE_PREFIX`` on the command line:
 
 ::
 
@@ -176,8 +193,8 @@ Advantages
 ^^^^^^^^^^
 
 -  Compatibility: Your Django application doesn’t need any awareness of
-   multi-tenancy. Database-level tools (such as ``mysqldump``) just
-   work.
+   multi-tenancy. Database-level tools (such as ``mysqldump`` or ``pgdump``)
+   just work.
 -  Isolation: One tenant, one database means there’s no intermingling of
    tenant data.
 -  Simplicity: Your application schemas don’t need to be cluttered with
@@ -194,11 +211,10 @@ Limitations
    tenants, bugs in the mapper (or anywhere else in the app) could cause
    data corruption.
 -  A valid database still needs to be specified in ``settings.DATABASE``
-   for use when the connection is first established (this should be
+   for use when the connection is first established with MySQL (this should be
    fixed eventually).
--  MySQL-only (this should be fixed eventually).
 -  Overhead: requests may add up to one extra query (the
-   ``USE <dbname>`` statement).
+   ``USE <dbname>`` statement for MySQL or the ``SET search_path TO <tenant>`` for PostgreSQL).
 
 Alternatives and Further Reading
 --------------------------------
