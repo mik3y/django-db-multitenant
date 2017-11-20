@@ -1,6 +1,16 @@
 Changelog
 =========
 
+v0.2.0 (2017-11-21)
+-------------------
+
+- New PostgreSQL backend
+- Improved documentation
+- Examples of mappers are provided in the repository
+- update_from_env arguments are now optional
+- New setup.py based on Human's Ultimate Guide to setup.py
+- Remove Python 2.6 support
+
 v0.1.3 (2016-09-10)
 -------------------
 
