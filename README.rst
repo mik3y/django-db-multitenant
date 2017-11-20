@@ -153,16 +153,6 @@ definition, which will cause cache keys to be prefixed with the value of
         }
     }
 
-**South Support**
-
-If you use South, add the following to settings:
-
-.. code:: python
-
-    SOUTH_DATABASE_ADAPTERS = {
-        'default': 'south.db.mysql'
-    }
-
 **Management Commands**: In order to use management commands (like
 syncdb) with the correct tenant, inject this little hack in your
 settings:
