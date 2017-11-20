@@ -12,11 +12,20 @@ tenant name will be issued in a `SET search_path TO` SQL query.
 
 Take care to create the corresponding schema first, with ``psql``:
 
-db=# CREATE SCHEMA foo;
+  db=# CREATE SCHEMA foo;
 
 You can set the tenant in command line with:
 
-TENANT_NAME=foo ./manage.my migrate
+  TENANT_NAME=foo ./manage.my migrate
+
+With PostgreSQL, it's possible to have complex setups where
+some tables are public so you can set the schema to:
+
+  SET search_path TO foo,public;
+
+To have an access to public and foo tables at the same time.
+
+https://www.postgresql.org/docs/current/static/ddl-schemas.html
 """
 import re
 from db_multitenant import mapper
