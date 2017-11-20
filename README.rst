@@ -44,9 +44,9 @@ Operation
 
 The main technique is as follows:
 
-1. When a request first arrives, determine desired the tenant from the
+#. When a request first arrives, determine desired the tenant from the
    ``request`` object, and save it in thread-local storage.
-2. Later in the request, when a database cursor is accquired, issue an
+#. Later in the request, when a database cursor is accquired, issue an
    SQL ``USE <tenant database name>`` for the desired tenant with MySQL
    or ``SET search_patch TO <tenant name>`` with PostgreSQL.
 
@@ -83,16 +83,14 @@ You must implement a subclass of
 `db_multitenant.mapper <https://github.com/mik3y/django-db-multitenant/blob/master/db_multitenant/mapper.py>`__
 which determines the database name and cache prefix from the request.
 
-Some examples:
+To help you to write your mapper, the repository contains examples of mappers which extracts the hostname
+of URL to determine the tenant name (eg. in `https://foo.example.com/bar/`, `foo` will be the tenant name):
 
--  A `simple mapper for
-   MySQL <https://gist.github.com/mik3y/5959322>`__, which uses a
-   portion of the hostname directly as the database name.
--  A `simple mapper for
-   PostgreSQL <https://gist.github.com/stephane/08b649ea818bd9dce2ff33903ba94aba>`__
--  A `Redis-backed mapper <https://gist.github.com/mik3y/5959282>`__,
-   which looks up the tenant using the hostname, throwing a 404 if
-   unrecognized.
+-  `mapper for MySQL <https://github.com/mik3y/django-db-multitenant/blob/master/mapper_examples/mysql_hostname_tenant_mapper.py>`__, which uses a portion of the hostname directly as the database name.
+-  `mapper for PostgreSQL <https://github.com/mik3y/django-db-multitenant/blob/master/mapper_examples/postgresql_hostname_tenant_mapper.py>`__, which uses a portion of the hostname as search path (schema).
+-  `mapper for Redis <https://github.com/mik3y/django-db-multitenant/blob/master/mapper_examples/redis_hostname_tenant_mapper.py>`__, which looks up the tenant using the hostname, throwing a 404 if unrecognized.
+
+Feel free to copy an example mapper in your project then adjust it to your needs.
 
 3. Update settings.py
 ~~~~~~~~~~~~~~~~~~~~~
