@@ -86,9 +86,16 @@ which determines the database name and cache prefix from the request.
 To help you to write your mapper, the repository contains examples of mappers which extracts the hostname
 of URL to determine the tenant name (eg. in `https://foo.example.com/bar/`, `foo` will be the tenant name):
 
--  `mapper for MySQL <https://github.com/mik3y/django-db-multitenant/blob/master/mapper_examples/mysql_hostname_tenant_mapper.py>`__, which uses a portion of the hostname directly as the database name.
--  `mapper for PostgreSQL <https://github.com/mik3y/django-db-multitenant/blob/master/mapper_examples/postgresql_hostname_tenant_mapper.py>`__, which uses a portion of the hostname as search path (schema).
--  `mapper for Redis <https://github.com/mik3y/django-db-multitenant/blob/master/mapper_examples/redis_hostname_tenant_mapper.py>`__, which looks up the tenant using the hostname, throwing a 404 if unrecognized.
+-  `mapper for MySQL <https://github.com/mik3y/django-db-multitenant/blob/master/mapper_examples/mysql_hostname_tenant_mapper.py>`__,
+   which uses a portion of the hostname directly as the database name.
+
+-  `mapper for PostgreSQL <https://github.com/mik3y/django-db-multitenant/blob/master/mapper_examples/postgresql_hostname_tenant_mapper.py>`__,
+   which uses a portion of the hostname as search path (schema). PostgreSQL
+   allows complex setups with sharing of common tables (public accounts for example),
+   see the comment in the mapper for more details.
+
+-  `mapper for Redis <https://github.com/mik3y/django-db-multitenant/blob/master/mapper_examples/redis_hostname_tenant_mapper.py>`__,
+   which looks up the tenant using the hostname, throwing a 404 if unrecognized.
 
 Feel free to copy an example mapper in your project then adjust it to your needs.
 
@@ -96,20 +103,21 @@ Feel free to copy an example mapper in your project then adjust it to your needs
 ~~~~~~~~~~~~~~~~~~~~~
 
 Set the multitenant mapper by specifying the full dotted path to your
-implementation:
+implementation (in this example, `mapper` is the name of file `mapper.py`):
 
 .. code:: python
 
     MULTITENANT_MAPPER_CLASS = 'myapp.mapper.TenantMapper'
 
-Install the multitenant middleware as the *first* middleware (prior to Django
+Install the multitenant middleware as the *first* middleware of the list (prior to Django
 1.10, you must use the ``MIDDLEWARE_CLASSES`` setting):
 
 .. code:: python
 
-    MIDDLEWARE = (
+    MIDDLEWARE = [
         'db_multitenant.middleware.MultiTenantMiddleware',
-        ) + MIDDLEWARE
+        ....
+    ]
 
 Change your database backend to the multitenant wrapper:
 
@@ -154,8 +162,8 @@ definition, which will cause cache keys to be prefixed with the value of
 Management Commands
 -------------------
 
-In order to use management commands (like syncdb) with the correct tenant,
-inject this little hack in your settings:
+In order to use management commands (like `migrate`) with the correct tenant,
+inject this little hack at the end of your `settings.py`:
 
 .. code:: python
 
@@ -163,12 +171,17 @@ inject this little hack in your settings:
     update_from_env(database_settings=DATABASES['default'],
         cache_settings=CACHES['default'])
 
-You can then export ``TENANT_DATABASE_NAME``, ``TENANT_NAME`` (for PostgreSQL)
-and ``TENANT_CACHE_PREFIX`` on the command line:
+If you didn't set `CACHES` in your settings and you don't intend to use a cache system,
+you don't have to pass the `cache_settings` argument to the function.
 
-::
+You can then export ``TENANT_DATABASE_NAME`` for MySQL or ``TENANT_NAME`` for PostgreSQL
+and ``TENANT_CACHE_PREFIX`` on the command line, for example:
 
-    $ TENANT_DATABASE_NAME=example.com ./manage.py syncdb
+.. code:: bash
+
+    $ TENANT_DATABASE_NAME=example.com ./manage.py migrate
+
+Don't forget to create the database (MySQL) or the required schema first (PostgreSQL).
 
 That’s it. Because django-db-multitenant does not define any models,
 there’s no need to add it to ``INSTALLED_APPS``.
@@ -186,7 +199,7 @@ Advantages
    multi-tenancy. Database-level tools (such as ``mysqldump`` or ``pgdump``)
    just work.
 -  Isolation: One tenant, one database means there’s no intermingling of
-   tenant data.
+   tenant data (excepted if you share tables with PostgreSQL).
 -  Simplicity: Your application schemas don’t need to be cluttered with
    ‘Tenant’ foreign key relationships.
 -  Should work well with Django 1.6 connection persistence and
