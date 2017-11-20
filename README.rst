@@ -180,7 +180,7 @@ There is no one-size-fits-all solution for a data modeling problem such
 as multi-tenancy (see ‘Alternatives’).
 
 Advantages
-^^^^^^^^^^
+~~~~~~~~~~
 
 -  Compatibility: Your Django application doesn’t need any awareness of
    multi-tenancy. Database-level tools (such as ``mysqldump`` or ``pgdump``)
@@ -193,7 +193,7 @@ Advantages
    connection pooling.
 
 Limitations
-^^^^^^^^^^^
+~~~~~~~~~~~
 
 -  Unorthodox. Django does not expect this kind of dynamic database
    connection tinkering, and there could be unexpected bugs.
