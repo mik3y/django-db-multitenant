@@ -153,9 +153,11 @@ definition, which will cause cache keys to be prefixed with the value of
         }
     }
 
-**Management Commands**: In order to use management commands (like
-syncdb) with the correct tenant, inject this little hack in your
-settings:
+Management Commands
+-------------------
+
+In order to use management commands (like syncdb) with the correct tenant,
+inject this little hack in your settings:
 
 .. code:: python
 
