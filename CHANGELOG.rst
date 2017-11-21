@@ -1,7 +1,12 @@
 Changelog
 =========
 
-v0.2.0 (2017-11-21)
+v0.2.1 (2017-11-21)
+-------------------
+
+- Fixed package name in setup.py
+
+v0.2.0 (2017-11-20)
 -------------------
 
 - New PostgreSQL backend
