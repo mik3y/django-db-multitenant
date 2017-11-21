@@ -12,7 +12,8 @@ from shutil import rmtree
 from setuptools import setup, Command
 
 # Package meta-data.
-NAME = 'db_multitenant'
+NAME = 'django-db-multitenant'
+MODULE_NAME = 'db_multitenant'
 DESCRIPTION = 'Multitenant support for Django, using one tenant per database.'
 URL = 'https://github.com/mik3y/django-db-multitenant'
 EMAIL = 'opensource@hoho.com'
@@ -31,7 +32,7 @@ with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 # Load the package's __version__.py module as a dictionary.
 about = {}
-with open(os.path.join(here, NAME, '__version__.py')) as f:
+with open(os.path.join(here, MODULE_NAME, '__version__.py')) as f:
     exec(f.read(), about)
 
 
@@ -77,7 +78,7 @@ setup(
     author=AUTHOR,
     author_email=EMAIL,
     url=URL,
-    py_modules=['db_multitenant'],
+    py_modules=[MODULE_NAME],
     install_requires=REQUIRED,
     include_package_data=True,
     license='Apache',
