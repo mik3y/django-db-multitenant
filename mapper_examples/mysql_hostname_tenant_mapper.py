@@ -20,5 +20,6 @@ class SimpleTenantMapper(mapper.TenantMapper):
     def get_dbname(self, request):
         return 'tenant-%s' % self.get_tenant_name(request)
 
-    def get_cache_prefix(self, request):
-        return 'tenant-%s' % self.get_tenant_name(request)
+    def get_cache_prefix(self, request, tenant_name, dbname):
+        """The arguments dbname and tenant_name are provided by the methods of this TenantMapper"""
+        return 'tenant-%s' % tenant_name
