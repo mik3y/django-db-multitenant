@@ -1,6 +1,22 @@
 Changelog
 =========
 
+Not released yet
+----------------
+
+- Change API of mapper to pass tenant_name to get_db_name
+- Add new Tests section in the documentation
+- Rename dbname to db_name for consistency with tenant_name
+- Fix bug from v2.0 on signature of get_cache_prefix
+
+The API of the mapper has been modified to speed up parsing
+and for consistency:
+
+- ``get_dbname()`` has been renamed to ``get_db_name()``
+- ``get_db_name()`` receives ``request`` and a new ``tenant_name`` argument
+- ``get_cache_prefix()`` receives ``request`` and new ``tenant_name`` and
+  ``db_name`` arguments
+
 v0.2.1 (2017-11-21)
 -------------------
 
