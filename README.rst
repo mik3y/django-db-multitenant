@@ -159,11 +159,23 @@ definition, which will cause cache keys to be prefixed with the value of
         }
     }
 
+4. Tests
+~~~~~~~~
+
+If the tenant name of your application is extracted from the URL (as in the provided examples of
+`mappers <https://github.com/mik3y/django-db-multitenant/blob/master/mapper_examples>`__), you can add
+a host to your ``/etc/hosts`` such as ``foo.example.com`` to redirect to your localhost server.
+
+You should add ``foo.example.com`` to ``ALLOWED_HOSTS`` list in your Django settings and just try
+to reach your application from your browser with ``http://foo.example.com:8000``.
+
+The examples of mappers provide information about the way to create a tenant zone.
+
 Management Commands
 -------------------
 
-In order to use management commands (like `migrate`) with the correct tenant,
-inject this little hack at the end of your `settings.py`:
+In order to use management commands (like ``migrate``) with the correct tenant,
+inject this little hack at the end of your ``settings.py``:
 
 .. code:: python
 
@@ -171,8 +183,8 @@ inject this little hack at the end of your `settings.py`:
     update_from_env(database_settings=DATABASES['default'],
         cache_settings=CACHES['default'])
 
-If you didn't set `CACHES` in your settings and you don't intend to use a cache system,
-you don't have to pass the `cache_settings` argument to the function.
+If you didn't set ``CACHES`` in your settings and you don't intend to use a cache system,
+you don't have to pass the ``cache_settings`` argument to the function.
 
 You can then export ``TENANT_DATABASE_NAME`` for MySQL or ``TENANT_NAME`` for PostgreSQL
 and ``TENANT_CACHE_PREFIX`` on the command line, for example:
