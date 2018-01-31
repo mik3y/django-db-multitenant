@@ -69,7 +69,7 @@ class DatabaseWrapper(WRAPPED_BACKEND.DatabaseWrapper):
             start_time = time.time()
             cursor.execute('USE `%s`;' % db_name)
             time_ms = int((time.time() - start_time) * 1000)
-            LOGGER.debug('Applied db_name `%s` in %s ms' % (db_name, time_ms))
+            LOGGER.debug('Applied db_name `%s` in %s ms', db_name, time_ms)
             connection.mt_db_name = db_name
 
         return cursor
