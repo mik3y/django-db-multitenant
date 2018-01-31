@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v0.3.1 (2018-02-01)
+-------------------
+
+- Pylint
+- Improve passing of arguments to logger in MySQL backend
+
 v0.3.0 (2018-02-01)
 -------------------
 
