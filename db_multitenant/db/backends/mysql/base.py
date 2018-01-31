@@ -50,26 +50,26 @@ class DatabaseWrapper(WRAPPED_BACKEND.DatabaseWrapper):
         """
         cursor = super(DatabaseWrapper, self)._cursor()
 
-        dbname = self.threadlocal.get_dbname()
-        if not dbname:
+        db_name = self.threadlocal.get_db_name()
+        if not db_name:
             # Django loads the settings after it tries to connect to mysql, when running management commands
             # If that's the case, update database name manually
             update_database_from_env(super(DatabaseWrapper, self).get_connection_params())
-            dbname = self.threadlocal.get_dbname()
-            if not dbname:
-                raise ImproperlyConfigured('dbname not set at cursor create time')
+            db_name = self.threadlocal.get_db_name()
+            if not db_name:
+                raise ImproperlyConfigured('db_name not set at cursor create time')
 
-        # Cache the applied dbname as "mt_dbname" on the connection, avoiding
+        # Cache the applied db_name as "mt_db_name" on the connection, avoiding
         # an extra execute() if already set.  Importantly, we assume no other
         # code in the app is executing `USE`.
         connection = cursor.cursor.connection
-        connection_dbname = getattr(connection, 'mt_dbname', None)
+        connection_db_name = getattr(connection, 'mt_db_name', None)
 
-        if connection_dbname != dbname:
+        if connection_db_name != db_name:
             start_time = time.time()
-            cursor.execute('USE `%s`;' % dbname)
+            cursor.execute('USE `%s`;' % db_name)
             time_ms = int((time.time() - start_time) * 1000)
-            LOGGER.debug('Applied dbname `%s` in %s ms' % (dbname, time_ms))
-            connection.mt_dbname = dbname
+            LOGGER.debug('Applied db_name `%s` in %s ms' % (db_name, time_ms))
+            connection.mt_db_name = db_name
 
         return cursor

@@ -217,7 +217,7 @@ Limitations
    for use when the connection is first established with MySQL (this should be
    fixed eventually).
 -  Overhead: requests may add up to one extra query (the
-   ``USE <dbname>`` statement for MySQL or the ``SET search_path TO <tenant>`` for PostgreSQL).
+   ``USE <db_name>`` statement for MySQL or the ``SET search_path TO <tenant_name>`` for PostgreSQL).
 
 Alternatives and Further Reading
 --------------------------------

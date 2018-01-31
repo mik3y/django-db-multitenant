@@ -33,10 +33,10 @@ class TenantMapper:
         """Returns an opaque identifier for the current tenant."""
         raise NotImplementedError
 
-    def get_dbname(self, request):
+    def get_db_name(self, request):
         """Returns the database name which should be used for this tenant."""
         raise NotImplementedError
 
-    def get_cache_prefix(self, request, tenant_name, dbname):
+    def get_cache_prefix(self, request, tenant_name, db_name):
         """Returns the cache prefixed to be used for this tenant."""
         raise NotImplementedError

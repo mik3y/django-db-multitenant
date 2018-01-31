@@ -37,10 +37,10 @@ def update_from_env(database_settings=None, cache_settings=None):
 
 def update_database_from_env(database_settings):
     from django.db import connection
-    dbname = os.environ.get('TENANT_DATABASE_NAME')
-    if dbname and database_settings is not None:
-        database_settings['NAME'] = dbname
-        connection.get_threadlocal().set_dbname(dbname)
+    db_name = os.environ.get('TENANT_DATABASE_NAME')
+    if db_name and database_settings is not None:
+        database_settings['NAME'] = db_name
+        connection.get_threadlocal().set_db_name(db_name)
 
 def update_cache_from_env(cache_settings):
     from django.db import connection

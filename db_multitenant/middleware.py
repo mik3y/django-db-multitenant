@@ -43,9 +43,9 @@ class MultiTenantMiddleware(MiddlewareMixin):
         threadlocal = connection.get_threadlocal()
         tenant_name = mapper.get_tenant_name(request)
         threadlocal.set_tenant_name(tenant_name)
-        dbname = mapper.get_dbname(request)
-        threadlocal.set_dbname(dbname)
-        threadlocal.set_cache_prefix(mapper.get_cache_prefix(request, tenant_name, dbname))
+        db_name = mapper.get_db_name(request)
+        threadlocal.set_db_name(db_name)
+        threadlocal.set_cache_prefix(mapper.get_cache_prefix(request, tenant_name, db_name))
 
         if 'django.contrib.sites' in settings.INSTALLED_APPS:
             # Clear the sites framework cache.
@@ -56,7 +56,7 @@ class MultiTenantMiddleware(MiddlewareMixin):
         """Clears the database name and cache prefix on response.
 
         This is a precaution against the connection being reused without
-        first calling set_dbname or set_tenant_name.
+        first calling set_db_name or set_tenant_name.
         """
         connection.get_threadlocal().reset()
         return response

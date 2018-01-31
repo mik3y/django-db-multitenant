@@ -21,11 +21,11 @@ class RedisTenantMapper(mapper.TenantMapper):
             raise Http404('Unknown tenant for hostname: "%s"' % hostname)
         return name
 
-    def get_dbname(self, request):
+    def get_db_name(self, request):
         """Returns tenant-<tenant_name>, using tenant name from Redis."""
         return 'tenant-%s' % self.get_tenant_name(request)
 
-    def get_cache_prefix(self, request, tenant_name, dbname):
-        """The arguments dbname and tenant_name are provided by the methods of this TenantMapper.
+    def get_cache_prefix(self, request, tenant_name, db_name):
+        """The arguments db_name and tenant_name are provided by the methods of this TenantMapper.
            Returns tenant-<tenant_name>, using tenant name from Redis."""
         return 'tenant-%s' % tenant_name

@@ -44,14 +44,14 @@ class MultiTenantThreadlocal(local):
     def set_tenant_name(self, tenant_name):
         self.tenant_name = tenant_name
 
-    def get_dbname(self):
-        return self.dbname
+    def get_db_name(self):
+        return self.db_name
 
-    def set_dbname(self, dbname):
+    def set_db_name(self, db_name):
         # Sanity check; this is highly simplistic; mappers should sanitize.
-        if dbname and ';' in dbname:
-            raise ValueError('Illegal database name: %s' % dbname)
-        self.dbname = dbname
+        if db_name and ';' in db_name:
+            raise ValueError('Illegal database name: %s' % db_name)
+        self.db_name = db_name
 
     def set_cache_prefix(self, prefix):
         self.cache_prefix = prefix
@@ -61,6 +61,6 @@ class MultiTenantThreadlocal(local):
 
     def reset(self):
         self.tenant_name = None
-        self.dbname = None
+        self.db_name = None
         self.cache_prefix = None
 
