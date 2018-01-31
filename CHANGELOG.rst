@@ -1,8 +1,8 @@
 Changelog
 =========
 
-Not released yet
-----------------
+v0.3.0 (2018-02-01)
+-------------------
 
 - Change API of mapper to pass tenant_name to get_db_name
 - Add new Tests section in the documentation
