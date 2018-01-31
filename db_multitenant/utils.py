@@ -21,10 +21,10 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import os
+from importlib import import_module
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from importlib import import_module
 
 from db_multitenant.mapper import TenantMapper
 
@@ -67,13 +67,13 @@ def get_mapper():
             module_path, member_name = name.rsplit(".", 1)
             module = import_module(module_path)
             cls = getattr(module, member_name)
-        except (ValueError, ImportError, AttributeError)as e:
-            raise ImportError("Could not import mapper: %s: %s" % (name, e))
+        except (ValueError, ImportError, AttributeError) as error:
+            raise ImportError("Could not import mapper: %s: %s" % (name, error))
 
         if not issubclass(cls, TenantMapper):
-            raise ImproperlyConfigured('%s does not subclass db_multitenant.mapper.TenantMapper', name)
+            raise ImproperlyConfigured(
+                '%s does not subclass db_multitenant.mapper.TenantMapper', name)
 
         _CACHED_MAPPER = cls()
 
     return _CACHED_MAPPER
-

@@ -21,11 +21,11 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from importlib import import_module
 import logging
 import time
 
 from django.core.exceptions import ImproperlyConfigured
-from importlib import import_module
 
 from db_multitenant.threadlocal import MultiTenantThreadlocal
 from db_multitenant.utils import update_database_from_env
@@ -52,8 +52,9 @@ class DatabaseWrapper(WRAPPED_BACKEND.DatabaseWrapper):
 
         db_name = self.threadlocal.get_db_name()
         if not db_name:
-            # Django loads the settings after it tries to connect to mysql, when running management commands
-            # If that's the case, update database name manually
+            # Django loads the settings after it tries to connect to mysql, when
+            # running management commands If that's the case, update database
+            # name manually
             update_database_from_env(super(DatabaseWrapper, self).get_connection_params())
             db_name = self.threadlocal.get_db_name()
             if not db_name:

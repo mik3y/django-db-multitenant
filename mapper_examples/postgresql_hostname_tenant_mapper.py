@@ -30,14 +30,14 @@ https://www.postgresql.org/docs/current/static/ddl-schemas.html
 import re
 from db_multitenant import mapper
 
-host_regex = re.compile(r'(\w+)[\.|$]')
+HOST_REGEX = re.compile(r'(\w+)[\.|$]')
 
 
 class TenantMapper(mapper.TenantMapper):
     def get_tenant_name(self, request):
         """Takes the first part of the hostname as the tenant"""
         hostname = request.get_host()
-        match = host_regex.search(hostname)
+        match = HOST_REGEX.search(hostname)
         tenant_name = match.groups()[0].lower() if match else None
 
         # Compare against a whitelist or fallback to 'public'?

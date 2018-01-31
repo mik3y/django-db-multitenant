@@ -63,4 +63,3 @@ class MultiTenantThreadlocal(local):
         self.tenant_name = None
         self.db_name = None
         self.cache_prefix = None
-
