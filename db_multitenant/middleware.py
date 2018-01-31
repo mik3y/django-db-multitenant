@@ -43,7 +43,7 @@ class MultiTenantMiddleware(MiddlewareMixin):
         threadlocal = connection.get_threadlocal()
         tenant_name = mapper.get_tenant_name(request)
         threadlocal.set_tenant_name(tenant_name)
-        db_name = mapper.get_db_name(request)
+        db_name = mapper.get_db_name(request, tenant_name)
         threadlocal.set_db_name(db_name)
         threadlocal.set_cache_prefix(mapper.get_cache_prefix(request, tenant_name, db_name))
 

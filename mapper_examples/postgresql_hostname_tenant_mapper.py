@@ -46,7 +46,7 @@ class TenantMapper(mapper.TenantMapper):
 
         return tenant_name
 
-    def get_db_name(self, request):
+    def get_db_name(self, request, tenant_name):
         # Still use the DB name of settings
         return None
 

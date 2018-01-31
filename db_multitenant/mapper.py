@@ -33,7 +33,7 @@ class TenantMapper:
         """Returns an opaque identifier for the current tenant."""
         raise NotImplementedError
 
-    def get_db_name(self, request):
+    def get_db_name(self, request, tenant_name):
         """Returns the database name which should be used for this tenant."""
         raise NotImplementedError
 
