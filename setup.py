@@ -9,7 +9,7 @@ import os
 import sys
 from shutil import rmtree
 
-from setuptools import setup, Command
+from setuptools import setup, find_packages, Command
 
 # Package meta-data.
 NAME = 'django-db-multitenant'
@@ -78,7 +78,8 @@ setup(
     author=AUTHOR,
     author_email=EMAIL,
     url=URL,
-    py_modules=[MODULE_NAME],
+    keywords='django multitenant',
+    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     install_requires=REQUIRED,
     include_package_data=True,
     license='Apache',
