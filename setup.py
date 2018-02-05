@@ -82,11 +82,11 @@ setup(
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     install_requires=REQUIRED,
     include_package_data=True,
-    license='Apache',
+    license='BSD',
     classifiers=[
         # Trove classifiers
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
-        'License :: OSI Approved :: Apache Software License',
+        'License :: OSI Approved :: BSD License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',

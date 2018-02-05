@@ -1,2 +1,2 @@
-include *.rst *.txt
+include AUTHORS LICENSE *.rst
 recursive-include db_multitenant *.py

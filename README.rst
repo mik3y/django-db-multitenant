@@ -231,26 +231,15 @@ Limitations
 -  Overhead: requests may add up to one extra query (the
    ``USE <db_name>`` statement for MySQL or the ``SET search_path TO <tenant_name>`` for PostgreSQL).
 
+License
+-------
+
+The project is distributed under the
+`3-clause BSD license <https://github.com/mik3y/django-db-multitenant/blob/master/LICENSE>`__.
+
 Alternatives and Further Reading
 --------------------------------
 
 -  `django-tenant-schemas <https://github.com/bcarneiro/django-tenant-schemas>`__
    implements a semi-isolated approach using PostgreSQL schemas (and
    inspired this project, as well as the ‘Overview’ section above).
-
-Credits and License
--------------------
-
-Copyright 2013 mike wakerly (opensource@hoho.com)
-
-Licensed under the Apache License, Version 2.0 (the “License”); you may
-not use this file except in compliance with the License. You may obtain
-a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an “AS IS” BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
