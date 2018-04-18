@@ -1,8 +1,9 @@
-from importlib import import_module
 import logging
 import time
 
+from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from importlib import import_module
 
 from db_multitenant.threadlocal import MultiTenantThreadlocal
 from db_multitenant.utils import update_database_from_env
@@ -21,33 +22,32 @@ class DatabaseWrapper(WRAPPED_BACKEND.DatabaseWrapper):
 
     def _cursor(self):
         """Supplies a cursor, executing the `USE` statement if required.
-
         Ideally we'd override a get_new_connection DatabaseWrapper function,
         but _cursor() is as close as it gets.
         """
         cursor = super(DatabaseWrapper, self)._cursor()
 
-        db_name = self.threadlocal.get_db_name()
-        if not db_name:
-            # Django loads the settings after it tries to connect to mysql, when
-            # running management commands If that's the case, update database
-            # name manually
+        dbname = self.threadlocal.get_dbname()
+        if not dbname:
+            # Django loads the settings after it tries to connect to mysql, when running management commands
+            # If that's the case, update database name manually
             update_database_from_env(super(DatabaseWrapper, self).get_connection_params())
-            db_name = self.threadlocal.get_db_name()
-            if not db_name:
-                raise ImproperlyConfigured('db_name not set at cursor create time')
-
-        # Cache the applied db_name as "mt_db_name" on the connection, avoiding
+            dbname = self.threadlocal.get_dbname()
+            if not dbname:
+                #raise ImproperlyConfigured('dbname not set at cursor create time')
+                dbname = settings.DATABASES['default']['NAME']
+                LOGGER.debug('dbname not set at cursor create time, using default database name: "{}".'.format(dbname))
+        # Cache the applied dbname as "mt_dbname" on the connection, avoiding
         # an extra execute() if already set.  Importantly, we assume no other
         # code in the app is executing `USE`.
         connection = cursor.cursor.connection
-        connection_db_name = getattr(connection, 'mt_db_name', None)
+        connection_dbname = getattr(connection, 'mt_dbname', None)
 
-        if connection_db_name != db_name:
+        if connection_dbname != dbname:
             start_time = time.time()
-            cursor.execute('USE `%s`;' % db_name)
+            cursor.execute('USE `%s`;' % dbname)
             time_ms = int((time.time() - start_time) * 1000)
-            LOGGER.debug('Applied db_name `%s` in %s ms', db_name, time_ms)
-            connection.mt_db_name = db_name
+            LOGGER.debug('Applied dbname `%s` in %s ms' % (dbname, time_ms))
+            connection.mt_dbname = dbname
 
         return cursor
