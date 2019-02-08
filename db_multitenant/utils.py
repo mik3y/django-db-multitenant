@@ -8,10 +8,12 @@ from db_multitenant.mapper import TenantMapper
 
 _CACHED_MAPPER = None
 
+
 def update_from_env(database_settings=None, cache_settings=None):
     update_database_from_env(database_settings)
     update_cache_from_env(cache_settings)
     update_tenant_name_from_env()
+
 
 def update_database_from_env(database_settings):
     from django.db import connection
@@ -20,18 +22,20 @@ def update_database_from_env(database_settings):
         database_settings['NAME'] = db_name
         connection.get_threadlocal().set_db_name(db_name)
 
+
 def update_cache_from_env(cache_settings):
     from django.db import connection
     cache_prefix = os.environ.get('TENANT_CACHE_PREFIX')
     if cache_prefix is not None and cache_settings is not None:
-        cache_settings['KEY_PREFIX'] = cache_prefix
         connection.get_threadlocal().set_cache_prefix(cache_prefix)
+
 
 def update_tenant_name_from_env():
     from django.db import connection
     tenant_name = os.environ.get('TENANT_NAME')
     if tenant_name:
         connection.get_threadlocal().set_tenant_name(tenant_name)
+
 
 def get_mapper():
     """Returns the mapper."""
