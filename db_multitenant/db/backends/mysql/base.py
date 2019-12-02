@@ -27,12 +27,12 @@ class CursorWrapper(WRAPPED_BACKEND.CursorWrapper):
         return "/* {} */\n{}".format(cid_sql_template.format(cid=cid), sql)
 
     def execute(self, query, args=None):
-        query = self._add_comment(query)
-        return super().execute(query, args)
+        query = super().execute(query, args)
+        return self._add_comment(query)
 
     def executemany(self, query, args):
-        query = self._add_comment(query)
-        return super().executemany(query, args)
+        query = super().executemany(query, args)
+        return self._add_comment(query)
 
 
 class DatabaseWrapper(WRAPPED_BACKEND.DatabaseWrapper):
