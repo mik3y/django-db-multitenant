@@ -21,7 +21,11 @@ class MultiTenantMiddleware(MiddlewareMixin):
         tenant_name = mapper.get_tenant_name(request)
         threadlocal.set_tenant_name(tenant_name)
         db_name = mapper.get_db_name(request, tenant_name)
-        threadlocal.set_db_name(db_name)
+        # Fixes ValueError when trying to inject SQL, setting empty string as default
+        try:
+            threadlocal.set_db_name(db_name)
+        except ValueError as ve:
+            threadlocal.set_db_name('')
         threadlocal.set_cache_prefix(mapper.get_cache_prefix(request, tenant_name, db_name))
 
         if 'django.contrib.sites' in settings.INSTALLED_APPS:

@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v0.3.3 (2020-06-18)
+-------------------
+
+- Fixes ValueError when trying to inject SQL, setting empty string as default.
+- Predefined DB to avoid ImproperlyConfigured exception
+
 v0.3.2 (2018-02-01)
 -------------------
 
