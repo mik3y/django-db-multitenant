@@ -35,9 +35,7 @@ class DatabaseWrapper(WRAPPED_BACKEND.DatabaseWrapper):
             update_database_from_env(super(DatabaseWrapper, self).get_connection_params())
             db_name = self.threadlocal.get_db_name()
             if not db_name:
-                # As performance_schema always exists, it's predefined to avoid ImproperlyConfigured exception
-                db_name = "performance_schema"
-                #raise ImproperlyConfigured('db_name not set at cursor create time')
+                raise ImproperlyConfigured('db_name not set at cursor create time')
 
         # Cache the applied db_name as "mt_db_name" on the connection, avoiding
         # an extra execute() if already set.  Importantly, we assume no other
