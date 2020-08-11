@@ -76,6 +76,10 @@ Install ``django-db-multitenant`` (or add it to your setup.py).
 
     $ pip install django-db-multitenant
 
+::
+
+    $ pip install git+https://github.com/leapoli/django-db-multitenant.git
+
 2. Implement a mapper
 ~~~~~~~~~~~~~~~~~~~~~
 
