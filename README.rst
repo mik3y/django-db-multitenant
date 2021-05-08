@@ -48,7 +48,7 @@ The main technique is as follows:
    ``request`` object, and save it in thread-local storage.
 #. Later in the request, when a database cursor is accquired, issue an
    SQL ``USE <tenant database name>`` for the desired tenant with MySQL
-   or ``SET search_patch TO <tenant name>`` with PostgreSQL.
+   or ``SET search_path TO <tenant name>`` with PostgreSQL.
 
 Step 1 is accomplished by implementing a `mapper
 class <https://github.com/mik3y/django-db-multitenant/blob/master/db_multitenant/mapper.py>`__.
